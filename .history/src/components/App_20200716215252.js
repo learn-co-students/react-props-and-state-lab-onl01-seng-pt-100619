@@ -1,18 +1,18 @@
-import React from 'react';
+import React from 'react'
 
-import Filters from './Filters';
-import PetBrowser from './PetBrowser';
+import Filters from './Filters'
+import PetBrowser from './PetBrowser'
 
 class App extends React.Component {
   constructor() {
-    super();
+    super()
 
     this.state = {
       pets: [],
       filters: {
-        type: 'all'
+        type: 'all',
       }
-    };
+    }
   }
 
   fetchPets = () => {
@@ -37,7 +37,6 @@ class App extends React.Component {
     });
     this.setState({ pets: pets });
   };
-
   render() {
     return (
       <div className="ui container">
@@ -47,19 +46,16 @@ class App extends React.Component {
         <div className="ui container">
           <div className="ui grid">
             <div className="four wide column">
-              <Filters
-                onChangeType={this.onChangeType}
-                onFindPetsClick={this.fetchPets}
-              />
+              <Filters />
             </div>
             <div className="twelve wide column">
-              <PetBrowser pets={this.state.pets} onAdoptPet={this.onAdoptPet} />
+              <PetBrowser />
             </div>
           </div>
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default App
