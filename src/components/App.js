@@ -15,6 +15,54 @@ class App extends React.Component {
     }
   }
 
+  handleStateChange = (event) => {
+    console.log(event.target.value)
+    this.setState({
+      ...this.state,
+      filters: {
+        type: event.target.value
+      }
+    })
+  }
+
+  handlePetsClick = (event) => {
+    let currentFilter = ""
+    switch(this.state.filters.type) {
+      case 'all':
+        currentFilter = ""
+        break;
+      case 'dog':
+        currentFilter = "?type=dog"
+        break;
+      case 'cat':
+        currentFilter = "?type=cat"
+        break;
+      case 'micropig':
+        currentFilter = "?type=micropig"
+        break;
+      default:
+        console.log('filter does not match dog, micropig, all, or cat')
+    }
+    fetch(`/api/pets${currentFilter}`).then((list) => list.json()).then((resp) => {
+      console.log(resp)
+      this.setState({
+        ...this.state,
+        pets: resp 
+      })
+    })
+  }
+
+  handleAdopt = (id) => {
+    const petsMap = this.state.pets.map(pet => {
+      if (pet.id === id) {
+        return {...pet, isAdopted: true }
+      } else {
+        return pet 
+      }
+    });
+    this.setState({ pets: petsMap });
+  }
+
   render() {
     return (
       <div className="ui container">
@@ -24,10 +72,10 @@ class App extends React.Component {
         <div className="ui container">
           <div className="ui grid">
             <div className="four wide column">
-              <Filters />
+              <Filters onChangeType={this.handleStateChange} onFindPetsClick={this.handlePetsClick} />
             </div>
             <div className="twelve wide column">
-              <PetBrowser />
+              <PetBrowser pets={this.state.pets} onAdoptPet={this.handleAdopt} />
             </div>
           </div>
         </div>
